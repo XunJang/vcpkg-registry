@@ -1,0 +1,15 @@
+if("${ARGS}" MATCHES "^libxmp_lite;")
+    set(z_vcpkg_libxmp_lite_root "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/share/libxmp-lite")
+    include("${z_vcpkg_libxmp_lite_root}/libxmp-lite-config.cmake")
+    include("${z_vcpkg_libxmp_lite_root}/libxmp-lite-config-version.cmake" OPTIONAL)
+
+    if(TARGET libxmp-lite::xmp_lite_shared OR TARGET libxmp-lite::xmp_lite_static)
+        set(libxmp_lite_FOUND TRUE)
+    else()
+        set(libxmp_lite_FOUND FALSE)
+    endif()
+
+    unset(z_vcpkg_libxmp_lite_root)
+else()
+    _find_package(${ARGS})
+endif()
