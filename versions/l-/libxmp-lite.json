@@ -2,7 +2,7 @@
   "versions": [
     {
       "version-string": "4.7.0",
-      "git-tree": "REPLACE_WITH_GIT_TREE"
+      "git-tree": "d3da49e56840fd3a3cd3977c3673629f00dc9d86"
     }
   ]
 }

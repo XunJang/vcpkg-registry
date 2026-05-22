@@ -1,3 +1,8 @@
 {
-  "default": {}
+  "default": {
+    "libxmp-lite": {
+      "baseline": "4.7.0",
+      "port-version": 0
+    }
+  }
 }
