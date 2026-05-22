@@ -7,10 +7,12 @@ vcpkg_from_github(
 )
 
 vcpkg_cmake_configure(
-    SOURCE_PATH "${SOURCE_PATH}/lite"
+    SOURCE_PATH "${SOURCE_PATH}"
     OPTIONS
+        -DBUILD_LITE=ON
         -DBUILD_SHARED=ON
         -DBUILD_STATIC=ON
+        -DWITH_UNIT_TESTS=OFF
 )
 
 vcpkg_cmake_install()
@@ -21,6 +23,9 @@ vcpkg_cmake_config_fixup(CONFIG_PATH cmake)
 file(REMOVE_RECURSE
     "${CURRENT_PACKAGES_DIR}/debug/include"
     "${CURRENT_PACKAGES_DIR}/debug/share"
+    "${CURRENT_PACKAGES_DIR}/include/xmp.h"
+    "${CURRENT_PACKAGES_DIR}/lib/cmake/libxmp"
+    "${CURRENT_PACKAGES_DIR}/debug/lib/cmake/libxmp"
 )
 
 if(EXISTS "${CURRENT_PACKAGES_DIR}/lib/pkgconfig/libxmp-lite.pc")
