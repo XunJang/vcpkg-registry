@@ -1,0 +1,7 @@
+{
+  "name": "libxmp-lite",
+  "version-string": "4.7.0",
+  "description": "Lightweight subset of libxmp for MOD, S3M, XM and IT playback",
+  "homepage": "https://github.com/libxmp/libxmp",
+  "license": "MIT"
+}
