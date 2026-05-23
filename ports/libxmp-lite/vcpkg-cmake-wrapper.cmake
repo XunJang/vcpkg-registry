@@ -26,7 +26,19 @@ if("${ARGS}" MATCHES "^libxmp_lite;")
         )
     endif()
 
-    if(TARGET "libxmp-lite::xmp_lite_shared" OR TARGET "libxmp-lite::xmp_lite_static")
+    if(TARGET "libxmp-lite::xmp_lite_shared" AND NOT TARGET "libxmp-lite::xmp_lite")
+        add_library("libxmp-lite::xmp_lite" INTERFACE IMPORTED)
+        set_target_properties("libxmp-lite::xmp_lite" PROPERTIES
+            INTERFACE_LINK_LIBRARIES "libxmp-lite::xmp_lite_shared"
+        )
+    elseif(TARGET "libxmp-lite::xmp_lite_static" AND NOT TARGET "libxmp-lite::xmp_lite")
+        add_library("libxmp-lite::xmp_lite" INTERFACE IMPORTED)
+        set_target_properties("libxmp-lite::xmp_lite" PROPERTIES
+            INTERFACE_LINK_LIBRARIES "libxmp-lite::xmp_lite_static"
+        )
+    endif()
+
+    if(TARGET "libxmp-lite::xmp_lite")
         set(libxmp_lite_FOUND TRUE)
     else()
         set(libxmp_lite_FOUND FALSE)
