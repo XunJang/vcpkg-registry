@@ -6,6 +6,33 @@ vcpkg_from_github(
     HEAD_REF master
 )
 
+file(READ "${SOURCE_PATH}/CMakeLists.txt" libxmp_cmake)
+string(REPLACE
+    "set_target_properties(xmp_static PROPERTIES OUTPUT_NAME libxmp-static)"
+    "set_target_properties(xmp_static PROPERTIES OUTPUT_NAME libxmp-full-static)"
+    libxmp_cmake
+    "${libxmp_cmake}"
+)
+string(REPLACE
+    "set_target_properties(xmp_shared PROPERTIES OUTPUT_NAME libxmp)"
+    "set_target_properties(xmp_shared PROPERTIES OUTPUT_NAME libxmp-full)"
+    libxmp_cmake
+    "${libxmp_cmake}"
+)
+string(REPLACE
+    "set_target_properties(xmp_lite_static PROPERTIES OUTPUT_NAME libxmp-lite-static)"
+    "set_target_properties(xmp_lite_static PROPERTIES OUTPUT_NAME libxmp-static)"
+    libxmp_cmake
+    "${libxmp_cmake}"
+)
+string(REPLACE
+    "set_target_properties(xmp_lite_shared PROPERTIES OUTPUT_NAME libxmp-lite)"
+    "set_target_properties(xmp_lite_shared PROPERTIES OUTPUT_NAME libxmp)"
+    libxmp_cmake
+    "${libxmp_cmake}"
+)
+file(WRITE "${SOURCE_PATH}/CMakeLists.txt" "${libxmp_cmake}")
+
 vcpkg_cmake_configure(
     SOURCE_PATH "${SOURCE_PATH}"
     OPTIONS
@@ -23,48 +50,17 @@ file(REMOVE_RECURSE
     "${CURRENT_PACKAGES_DIR}/debug/share"
     "${CURRENT_PACKAGES_DIR}/share/libxmp"
     "${CURRENT_PACKAGES_DIR}/share/libxmp-lite"
+    "${CURRENT_PACKAGES_DIR}/bin/libxmp-full.dll"
+    "${CURRENT_PACKAGES_DIR}/bin/libxmp-full.pdb"
+    "${CURRENT_PACKAGES_DIR}/lib/libxmp-full.lib"
+    "${CURRENT_PACKAGES_DIR}/lib/libxmp-full-static.lib"
+    "${CURRENT_PACKAGES_DIR}/debug/bin/libxmp-full.dll"
+    "${CURRENT_PACKAGES_DIR}/debug/bin/libxmp-full.pdb"
+    "${CURRENT_PACKAGES_DIR}/debug/lib/libxmp-full.lib"
+    "${CURRENT_PACKAGES_DIR}/debug/lib/libxmp-full-static.lib"
 )
 
-if(EXISTS "${CURRENT_PACKAGES_DIR}/include/libxmp-lite/xmp.h")
-    file(COPY "${CURRENT_PACKAGES_DIR}/include/libxmp-lite/xmp.h" DESTINATION "${CURRENT_PACKAGES_DIR}/include")
-endif()
-
-file(REMOVE_RECURSE
-    "${CURRENT_PACKAGES_DIR}/include/libxmp-lite"
-    "${CURRENT_PACKAGES_DIR}/bin/libxmp.dll"
-    "${CURRENT_PACKAGES_DIR}/bin/libxmp.pdb"
-    "${CURRENT_PACKAGES_DIR}/lib/libxmp.lib"
-    "${CURRENT_PACKAGES_DIR}/lib/libxmp-static.lib"
-    "${CURRENT_PACKAGES_DIR}/debug/bin/libxmp.dll"
-    "${CURRENT_PACKAGES_DIR}/debug/bin/libxmp.pdb"
-    "${CURRENT_PACKAGES_DIR}/debug/lib/libxmp.lib"
-    "${CURRENT_PACKAGES_DIR}/debug/lib/libxmp-static.lib"
-)
-
-if(EXISTS "${CURRENT_PACKAGES_DIR}/bin/libxmp-lite.dll")
-    file(RENAME "${CURRENT_PACKAGES_DIR}/bin/libxmp-lite.dll" "${CURRENT_PACKAGES_DIR}/bin/libxmp.dll")
-endif()
-if(EXISTS "${CURRENT_PACKAGES_DIR}/bin/libxmp-lite.pdb")
-    file(RENAME "${CURRENT_PACKAGES_DIR}/bin/libxmp-lite.pdb" "${CURRENT_PACKAGES_DIR}/bin/libxmp.pdb")
-endif()
-if(EXISTS "${CURRENT_PACKAGES_DIR}/lib/libxmp-lite.lib")
-    file(RENAME "${CURRENT_PACKAGES_DIR}/lib/libxmp-lite.lib" "${CURRENT_PACKAGES_DIR}/lib/libxmp.lib")
-endif()
-if(EXISTS "${CURRENT_PACKAGES_DIR}/lib/libxmp-lite-static.lib")
-    file(RENAME "${CURRENT_PACKAGES_DIR}/lib/libxmp-lite-static.lib" "${CURRENT_PACKAGES_DIR}/lib/libxmp-static.lib")
-endif()
-if(EXISTS "${CURRENT_PACKAGES_DIR}/debug/bin/libxmp-lite.dll")
-    file(RENAME "${CURRENT_PACKAGES_DIR}/debug/bin/libxmp-lite.dll" "${CURRENT_PACKAGES_DIR}/debug/bin/libxmp.dll")
-endif()
-if(EXISTS "${CURRENT_PACKAGES_DIR}/debug/bin/libxmp-lite.pdb")
-    file(RENAME "${CURRENT_PACKAGES_DIR}/debug/bin/libxmp-lite.pdb" "${CURRENT_PACKAGES_DIR}/debug/bin/libxmp.pdb")
-endif()
-if(EXISTS "${CURRENT_PACKAGES_DIR}/debug/lib/libxmp-lite.lib")
-    file(RENAME "${CURRENT_PACKAGES_DIR}/debug/lib/libxmp-lite.lib" "${CURRENT_PACKAGES_DIR}/debug/lib/libxmp.lib")
-endif()
-if(EXISTS "${CURRENT_PACKAGES_DIR}/debug/lib/libxmp-lite-static.lib")
-    file(RENAME "${CURRENT_PACKAGES_DIR}/debug/lib/libxmp-lite-static.lib" "${CURRENT_PACKAGES_DIR}/debug/lib/libxmp-static.lib")
-endif()
+file(REMOVE_RECURSE "${CURRENT_PACKAGES_DIR}/include/libxmp-lite")
 
 foreach(pc_file
     "${CURRENT_PACKAGES_DIR}/lib/pkgconfig/libxmp-lite.pc"
