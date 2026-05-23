@@ -2,7 +2,7 @@
   "versions": [
     {
       "version-string": "4.7.0-lite",
-      "git-tree": "REPLACE_WITH_LIBXMP_GIT_TREE"
+      "git-tree": "cc0b83d05a0c6cbd906353e1baeb9ee90f130b10"
     }
   ]
 }
