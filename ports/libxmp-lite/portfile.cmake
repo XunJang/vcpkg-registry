@@ -69,16 +69,17 @@ vcpkg_cmake_install()
 vcpkg_copy_pdbs()
 
 vcpkg_cmake_config_fixup(CONFIG_PATH cmake)
+vcpkg_fixup_pkgconfig()
 
 file(REMOVE_RECURSE
     "${CURRENT_PACKAGES_DIR}/debug/include"
     "${CURRENT_PACKAGES_DIR}/debug/share"
 )
 
-if(EXISTS "${CURRENT_PACKAGES_DIR}/lib/pkgconfig/libxmp-lite.pc")
-    file(MAKE_DIRECTORY "${CURRENT_PACKAGES_DIR}/tools/${PORT}")
-    file(COPY "${CURRENT_PACKAGES_DIR}/lib/pkgconfig/libxmp-lite.pc" DESTINATION "${CURRENT_PACKAGES_DIR}/tools/${PORT}")
-endif()
+file(INSTALL
+    "${CMAKE_CURRENT_LIST_DIR}/vcpkg-cmake-wrapper.cmake"
+    DESTINATION "${CURRENT_PACKAGES_DIR}/share/${PORT}"
+)
 
 file(INSTALL
     "${SOURCE_PATH}/docs/CREDITS"
