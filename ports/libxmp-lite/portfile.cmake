@@ -17,6 +17,8 @@ file(COPY "${SOURCE_PATH}/src" DESTINATION "${LITE_SOURCE_ROOT}")
 file(COPY "${SOURCE_PATH}/cmake/libxmp-checks.cmake" DESTINATION "${LITE_SOURCE_ROOT}/cmake")
 file(COPY "${SOURCE_PATH}/libxmp.map" DESTINATION "${LITE_SOURCE_ROOT}")
 file(COPY "${SOURCE_PATH}/src/lite/libxmp-lite.pc.in" DESTINATION "${LITE_SOURCE_ROOT}")
+file(COPY "${SOURCE_PATH}/src/lite/libxmp-lite-config.cmake" DESTINATION "${LITE_SOURCE_ROOT}")
+file(COPY "${SOURCE_PATH}/src/lite/libxmp-lite-config-version.cmake.autotools.in" DESTINATION "${LITE_SOURCE_ROOT}")
 file(COPY "${SOURCE_PATH}/lite/CMakeLists.txt" DESTINATION "${LITE_SOURCE_ROOT}")
 file(COPY "${SOURCE_PATH}/include/xmp.h" DESTINATION "${LITE_SOURCE_ROOT}/include/libxmp-lite")
 
