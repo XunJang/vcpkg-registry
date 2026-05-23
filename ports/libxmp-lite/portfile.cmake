@@ -68,7 +68,11 @@ vcpkg_cmake_configure(
 vcpkg_cmake_install()
 vcpkg_copy_pdbs()
 
-vcpkg_cmake_config_fixup(CONFIG_PATH cmake)
+if(VCPKG_TARGET_IS_MINGW)
+    vcpkg_cmake_config_fixup(PACKAGE_NAME "libxmp-lite" CONFIG_PATH "lib/cmake/libxmp-lite")
+else()
+    vcpkg_cmake_config_fixup(CONFIG_PATH cmake)
+endif()
 vcpkg_fixup_pkgconfig()
 
 file(REMOVE_RECURSE
