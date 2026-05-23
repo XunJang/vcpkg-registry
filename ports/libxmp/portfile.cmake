@@ -21,78 +21,67 @@ vcpkg_copy_pdbs()
 file(REMOVE_RECURSE
     "${CURRENT_PACKAGES_DIR}/debug/include"
     "${CURRENT_PACKAGES_DIR}/debug/share"
-    "${CURRENT_PACKAGES_DIR}/lib/cmake/libxmp"
-    "${CURRENT_PACKAGES_DIR}/debug/lib/cmake/libxmp"
+    "${CURRENT_PACKAGES_DIR}/share/libxmp"
+    "${CURRENT_PACKAGES_DIR}/share/libxmp-lite"
 )
 
 if(EXISTS "${CURRENT_PACKAGES_DIR}/include/libxmp-lite/xmp.h")
     file(COPY "${CURRENT_PACKAGES_DIR}/include/libxmp-lite/xmp.h" DESTINATION "${CURRENT_PACKAGES_DIR}/include")
 endif()
 
-if(EXISTS "${CURRENT_PACKAGES_DIR}/share/libxmp-lite")
-    file(RENAME "${CURRENT_PACKAGES_DIR}/share/libxmp-lite" "${CURRENT_PACKAGES_DIR}/share/libxmp")
+file(REMOVE_RECURSE
+    "${CURRENT_PACKAGES_DIR}/include/libxmp-lite"
+    "${CURRENT_PACKAGES_DIR}/bin/libxmp.dll"
+    "${CURRENT_PACKAGES_DIR}/bin/libxmp.pdb"
+    "${CURRENT_PACKAGES_DIR}/lib/libxmp.lib"
+    "${CURRENT_PACKAGES_DIR}/lib/libxmp-static.lib"
+    "${CURRENT_PACKAGES_DIR}/debug/bin/libxmp.dll"
+    "${CURRENT_PACKAGES_DIR}/debug/bin/libxmp.pdb"
+    "${CURRENT_PACKAGES_DIR}/debug/lib/libxmp.lib"
+    "${CURRENT_PACKAGES_DIR}/debug/lib/libxmp-static.lib"
+)
+
+if(EXISTS "${CURRENT_PACKAGES_DIR}/bin/libxmp-lite.dll")
+    file(RENAME "${CURRENT_PACKAGES_DIR}/bin/libxmp-lite.dll" "${CURRENT_PACKAGES_DIR}/bin/libxmp.dll")
+endif()
+if(EXISTS "${CURRENT_PACKAGES_DIR}/bin/libxmp-lite.pdb")
+    file(RENAME "${CURRENT_PACKAGES_DIR}/bin/libxmp-lite.pdb" "${CURRENT_PACKAGES_DIR}/bin/libxmp.pdb")
+endif()
+if(EXISTS "${CURRENT_PACKAGES_DIR}/lib/libxmp-lite.lib")
+    file(RENAME "${CURRENT_PACKAGES_DIR}/lib/libxmp-lite.lib" "${CURRENT_PACKAGES_DIR}/lib/libxmp.lib")
+endif()
+if(EXISTS "${CURRENT_PACKAGES_DIR}/lib/libxmp-lite-static.lib")
+    file(RENAME "${CURRENT_PACKAGES_DIR}/lib/libxmp-lite-static.lib" "${CURRENT_PACKAGES_DIR}/lib/libxmp-static.lib")
+endif()
+if(EXISTS "${CURRENT_PACKAGES_DIR}/debug/bin/libxmp-lite.dll")
+    file(RENAME "${CURRENT_PACKAGES_DIR}/debug/bin/libxmp-lite.dll" "${CURRENT_PACKAGES_DIR}/debug/bin/libxmp.dll")
+endif()
+if(EXISTS "${CURRENT_PACKAGES_DIR}/debug/bin/libxmp-lite.pdb")
+    file(RENAME "${CURRENT_PACKAGES_DIR}/debug/bin/libxmp-lite.pdb" "${CURRENT_PACKAGES_DIR}/debug/bin/libxmp.pdb")
+endif()
+if(EXISTS "${CURRENT_PACKAGES_DIR}/debug/lib/libxmp-lite.lib")
+    file(RENAME "${CURRENT_PACKAGES_DIR}/debug/lib/libxmp-lite.lib" "${CURRENT_PACKAGES_DIR}/debug/lib/libxmp.lib")
+endif()
+if(EXISTS "${CURRENT_PACKAGES_DIR}/debug/lib/libxmp-lite-static.lib")
+    file(RENAME "${CURRENT_PACKAGES_DIR}/debug/lib/libxmp-lite-static.lib" "${CURRENT_PACKAGES_DIR}/debug/lib/libxmp-static.lib")
 endif()
 
-if(EXISTS "${CURRENT_PACKAGES_DIR}/share/libxmp/libxmp-lite-config.cmake")
-    file(RENAME
-        "${CURRENT_PACKAGES_DIR}/share/libxmp/libxmp-lite-config.cmake"
-        "${CURRENT_PACKAGES_DIR}/share/libxmp/libxmp-config.cmake"
-    )
-endif()
-
-if(EXISTS "${CURRENT_PACKAGES_DIR}/share/libxmp/libxmp-lite-config-version.cmake")
-    file(RENAME
-        "${CURRENT_PACKAGES_DIR}/share/libxmp/libxmp-lite-config-version.cmake"
-        "${CURRENT_PACKAGES_DIR}/share/libxmp/libxmp-config-version.cmake"
-    )
-endif()
-
-foreach(target_file
-    libxmp-lite-shared-targets.cmake
-    libxmp-lite-shared-targets-debug.cmake
-    libxmp-lite-shared-targets-release.cmake
-    libxmp-lite-static-targets.cmake
-    libxmp-lite-static-targets-debug.cmake
-    libxmp-lite-static-targets-release.cmake)
-    if(EXISTS "${CURRENT_PACKAGES_DIR}/share/libxmp/${target_file}")
-        file(READ "${CURRENT_PACKAGES_DIR}/share/libxmp/${target_file}" target_contents)
-        string(REPLACE "libxmp-lite::xmp_lite_shared" "libxmp::xmp_shared" target_contents "${target_contents}")
-        string(REPLACE "libxmp-lite::xmp_lite_static" "libxmp::xmp_static" target_contents "${target_contents}")
-        string(REPLACE "include/libxmp-lite" "include" target_contents "${target_contents}")
-        string(REPLACE "libxmp-lite.lib" "libxmp.lib" target_contents "${target_contents}")
-        string(REPLACE "libxmp-lite-static.lib" "libxmp-static.lib" target_contents "${target_contents}")
-        string(REPLACE "bin/libxmp-lite.dll" "bin/libxmp.dll" target_contents "${target_contents}")
-        string(REPLACE "debug/bin/libxmp-lite.dll" "debug/bin/libxmp.dll" target_contents "${target_contents}")
-
-        set(output_name "${target_file}")
-        string(REPLACE "libxmp-lite-" "libxmp-" output_name "${output_name}")
-        file(WRITE "${CURRENT_PACKAGES_DIR}/share/libxmp/${output_name}" "${target_contents}")
-        file(REMOVE "${CURRENT_PACKAGES_DIR}/share/libxmp/${target_file}")
+foreach(pc_file
+    "${CURRENT_PACKAGES_DIR}/lib/pkgconfig/libxmp-lite.pc"
+    "${CURRENT_PACKAGES_DIR}/debug/lib/pkgconfig/libxmp-lite.pc")
+    if(EXISTS "${pc_file}")
+        file(READ "${pc_file}" pc_contents)
+        string(REPLACE "libxmp-lite" "libxmp" pc_contents "${pc_contents}")
+        string(REPLACE "-lxmp-lite" "-lxmp" pc_contents "${pc_contents}")
+        string(REPLACE "/libxmp-lite" "" pc_contents "${pc_contents}")
+        string(REPLACE "Cflags: -I\${includedir}" "Cflags: -I\${includedir}" pc_contents "${pc_contents}")
+        get_filename_component(pc_dir "${pc_file}" DIRECTORY)
+        file(WRITE "${pc_dir}/libxmp.pc" "${pc_contents}")
+        file(REMOVE "${pc_file}")
     endif()
 endforeach()
 
-if(EXISTS "${CURRENT_PACKAGES_DIR}/share/libxmp/libxmp-config.cmake")
-    file(WRITE "${CURRENT_PACKAGES_DIR}/share/libxmp/libxmp-config.cmake" [=[
-set(libxmp_FOUND OFF)
-
-if(EXISTS "${CMAKE_CURRENT_LISTDIR}/libxmp-shared-targets.cmake")
-    include("${CMAKE_CURRENT_LISTDIR}/libxmp-shared-targets.cmake")
-    set(libxmp_FOUND ON)
-endif()
-
-if(EXISTS "${CMAKE_CURRENT_LISTDIR}/libxmp-static-targets.cmake")
-    include("${CMAKE_CURRENT_LISTDIR}/libxmp-static-targets.cmake")
-    set(libxmp_FOUND ON)
-endif()
-]=])
-endif()
-
-if(EXISTS "${CURRENT_PACKAGES_DIR}/lib/pkgconfig/libxmp-lite.pc")
-    file(RENAME "${CURRENT_PACKAGES_DIR}/lib/pkgconfig/libxmp-lite.pc" "${CURRENT_PACKAGES_DIR}/lib/pkgconfig/libxmp.pc")
-endif()
-if(EXISTS "${CURRENT_PACKAGES_DIR}/debug/lib/pkgconfig/libxmp-lite.pc")
-    file(RENAME "${CURRENT_PACKAGES_DIR}/debug/lib/pkgconfig/libxmp-lite.pc" "${CURRENT_PACKAGES_DIR}/debug/lib/pkgconfig/libxmp.pc")
-endif()
+file(MAKE_DIRECTORY "${CURRENT_PACKAGES_DIR}/share/${PORT}")
 
 file(INSTALL
     "${SOURCE_PATH}/docs/CREDITS"
