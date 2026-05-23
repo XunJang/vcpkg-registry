@@ -3,7 +3,7 @@
     {
       "version": "3.4.8",
       "port-version": 1,
-      "git-tree": "REPLACE_WITH_SDL3_GIT_TREE"
+      "git-tree": "82bdb56aad31f69d21c4c55ab8043f0d7fa2397b"
     }
   ]
 }
