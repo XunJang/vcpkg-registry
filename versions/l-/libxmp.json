@@ -1,0 +1,8 @@
+{
+  "versions": [
+    {
+      "version-string": "4.7.0-lite",
+      "git-tree": "REPLACE_WITH_LIBXMP_GIT_TREE"
+    }
+  ]
+}
