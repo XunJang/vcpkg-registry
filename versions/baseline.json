@@ -2,7 +2,7 @@
   "default": {
     "sdl3": {
       "baseline": "3.4.8",
-      "port-version": 1
+      "port-version": 2
     },
     "libxmp-lite": {
       "baseline": "4.7.0",
