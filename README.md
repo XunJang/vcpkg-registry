@@ -16,8 +16,8 @@ Add this repository as a registry in your `vcpkg-configuration.json`:
   "registries": [
     {
       "kind": "git",
-      "repository": "https://github.com/XunJang/vcpkg-registry",
       "baseline": "<commit-sha>",
+      "repository": "https://github.com/XunJang/vcpkg-registry",
       "packages": [
         "libxmp-lite",
         "sdl3"
