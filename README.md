@@ -16,7 +16,7 @@ Add this repository as a registry in your `vcpkg-configuration.json`:
   "registries": [
     {
       "kind": "git",
-      "repository": "https://github.com/<owner>/vcpkg-registry",
+      "repository": "https://github.com/XunJang/vcpkg-registry",
       "baseline": "<commit-sha>",
       "packages": [
         "libxmp-lite",
@@ -27,7 +27,7 @@ Add this repository as a registry in your `vcpkg-configuration.json`:
 }
 ```
 
-Replace `<owner>` and `<commit-sha>` with the repository owner and the commit you want to pin.
+Replace `<commit-sha>` with the commit you want to pin.
 
 ## Notes
 
